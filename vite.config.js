@@ -10,8 +10,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        admin: resolve(__dirname, 'admin/index.html'), // แยกหน้า Admin
+        main: resolve(process.cwd(), 'index.html'),
+        admin: resolve(process.cwd(), 'admin/index.html'), // แยกหน้า Admin
       },
     },
   },
