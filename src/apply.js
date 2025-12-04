@@ -11,8 +11,8 @@ function openModal({ title, content }) {
   modal.id = 'apply-modal';
   modal.className = 'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4';
   modal.innerHTML = `
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform flex flex-col max-h-[90vh]">
-      <div class="p-5 border-b flex justify-between items-center bg-gray-50 rounded-t-2xl">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform flex flex-col max-h-[90vh] border border-gray-200">
+      <div class="p-5 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-2xl">
         <h3 class="font-bold text-lg text-gray-800">${title}</h3>
         <button onclick="closeModal()" class="text-gray-400 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -124,8 +124,8 @@ function renderTaskItem(task, state, index) {
         
         <!-- Actions -->
         <div class="flex-shrink-0 flex items-center gap-2">
-          <button class="btn btn-primary text-sm px-4 py-2" onclick="openTask('${task.key}')">
-            ${done ? '<i class="fa-solid fa-pen mr-1.5"></i> แก้ไข' : '<i class="fa-solid fa-arrow-right mr-1.5"></i> ทำรายการ'}
+          <button class="btn btn-primary text-sm px-3 py-2" onclick="openTask('${task.key}')">
+            ${done ? '<i class="fa-solid fa-pen"></i>' : '<i class="fa-solid fa-arrow-right"></i>'}
           </button>
           ${done ? `<button class="btn text-sm px-3 py-2 text-gray-500 hover:text-red-500" onclick="resetTask('${task.key}')" title="ล้างข้อมูล"><i class="fa-solid fa-trash-can"></i></button>` : ''}
         </div>
@@ -142,8 +142,17 @@ function renderList(state) {
   const allDone = completedCount === totalCount;
   const progressPercent = Math.round((completedCount / totalCount) * 100);
 
-  const header = `
-    <!-- Project Info Card -->
+  // Left: project summary, Right: checklist
+  const actionBar = `
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <button class="btn text-sm" onclick="goBackToProject()"><i class="fa-solid fa-arrow-left mr-2"></i> กลับไปหน้าโครงการ</button>
+        <button class="btn ${allDone ? 'btn-primary' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} text-sm" onclick="submitApplication()" ${!allDone ? 'disabled' : ''}><i class="fa-solid fa-paper-plane mr-2"></i> ส่งใบสมัคร</button>
+      </div>
+    </div>
+  `;
+
+  const projectCard = `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
       <div class="aspect-[21/9] relative">
         <img src="${MOCK_PROJECT_INFO.image}" alt="${MOCK_PROJECT_INFO.title}" class="w-full h-full object-cover">
@@ -161,12 +170,15 @@ function renderList(state) {
         </div>
       </div>
     </div>
+  `;
 
-    <!-- Progress Section -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-      <div class="flex items-center justify-between mb-4">
+  const tasksHtml = TASKS.map((task, idx) => renderTaskItem(task, state, idx)).join('\n');
+
+  const checklistCard = `
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="flex items-center justify-between mb-3">
         <div>
-          <h2 class="text-lg font-bold text-gray-900">สถานะการสมัคร</h2>
+          <h2 class="text-lg font-bold text-gray-900">รายการที่ต้องทำ</h2>
           <p class="text-sm text-gray-500">ดำเนินการให้ครบทุกขั้นตอนเพื่อส่งใบสมัคร</p>
         </div>
         <div class="text-right">
@@ -174,36 +186,20 @@ function renderList(state) {
           <p class="text-xs text-gray-400">ขั้นตอน</p>
         </div>
       </div>
-      <div class="relative h-3 bg-gray-100 rounded-full overflow-hidden">
+      <div class="relative h-3 bg-gray-100 rounded-full overflow-hidden mb-3">
         <div class="absolute inset-y-0 left-0 ${allDone ? 'bg-green-500' : 'bg-primary'} rounded-full transition-all duration-500" style="width: ${progressPercent}%"></div>
       </div>
-      <p class="text-xs text-gray-400 mt-2 text-center">${allDone ? '<i class="fa-solid fa-check-circle text-green-500 mr-1"></i> พร้อมส่งใบสมัครแล้ว!' : `เหลืออีก ${totalCount - completedCount} ขั้นตอน`}</p>
-    </div>
-
-    <!-- Tasks Header -->
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold text-gray-900"><i class="fa-solid fa-list-check mr-2 text-primary"></i> รายการที่ต้องทำ</h2>
-    </div>
-  `;
-
-  const items = TASKS.map((task, idx) => renderTaskItem(task, state, idx)).join('\n');
-
-  const footer = `
-    <!-- Footer Actions -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-6">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <button class="btn text-sm order-2 sm:order-1" onclick="goBackToProject()">
-          <i class="fa-solid fa-arrow-left mr-2"></i> กลับไปหน้าโครงการ
-        </button>
-        <button class="btn ${allDone ? 'btn-primary' : 'bg-gray-200 text-gray-400 cursor-not-allowed'} text-sm order-1 sm:order-2" onclick="submitApplication()" ${!allDone ? 'disabled' : ''}>
-          <i class="fa-solid fa-paper-plane mr-2"></i> ส่งใบสมัคร
-        </button>
-      </div>
+      <p class="text-xs text-gray-400 mb-4 text-center">${allDone ? '<i class="fa-solid fa-check-circle text-green-500 mr-1"></i> พร้อมส่งใบสมัครแล้ว!' : `เหลืออีก ${totalCount - completedCount} ขั้นตอน`}</p>
+      <div class="space-y-3">${tasksHtml}</div>
     </div>
   `;
 
   document.getElementById('apply-root').innerHTML = `
-    <div class="max-w-4xl mx-auto">${header}<div class="space-y-4">${items}</div>${footer}</div>
+    <div class="max-w-4xl mx-auto">
+      ${actionBar}
+      ${projectCard}
+      ${checklistCard}
+    </div>
   `;
 }
 
@@ -218,7 +214,7 @@ function openPersonalInfo(state) {
   const data = state.tasks.personal_info.data;
   const content = `
     <div class="space-y-5">
-      <div class="flex items-center gap-3 pb-4 border-b">
+      <div class="flex items-center gap-3 pb-4 border-b border-gray-200">
         <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
           <i class="fa-solid fa-user"></i>
         </div>
@@ -230,22 +226,22 @@ function openPersonalInfo(state) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">ชื่อ <span class="text-red-500">*</span></label>
-          <input id="pi-firstName" class="input w-full" placeholder="กรอกชื่อ" value="${data.firstName}" />
+          <input id="pi-firstName" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white" placeholder="กรอกชื่อ" value="${data.firstName}" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">นามสกุล <span class="text-red-500">*</span></label>
-          <input id="pi-lastName" class="input w-full" placeholder="กรอกนามสกุล" value="${data.lastName}" />
+          <input id="pi-lastName" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white" placeholder="กรอกนามสกุล" value="${data.lastName}" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">รหัสนักเรียน <span class="text-red-500">*</span></label>
-          <input id="pi-studentId" class="input w-full" placeholder="เช่น 12345" value="${data.studentId}" />
+          <input id="pi-studentId" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white" placeholder="เช่น 12345" value="${data.studentId}" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">วัน/เดือน/ปีเกิด <span class="text-red-500">*</span></label>
-          <input id="pi-dob" type="date" class="input w-full" value="${data.dob}" />
+          <input id="pi-dob" type="date" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white" value="${data.dob}" />
         </div>
       </div>
-      <div class="flex justify-end gap-3 pt-4 border-t">
+      <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
         <button class="btn px-5" onclick="closeModal()">ยกเลิก</button>
         <button class="btn btn-primary px-5" onclick="savePersonalInfo()"><i class="fa-solid fa-check mr-2"></i> บันทึก</button>
       </div>
@@ -278,7 +274,7 @@ function openUpload(state, key, label) {
   
   const content = `
     <div class="space-y-5">
-      <div class="flex items-center gap-3 pb-4 border-b">
+      <div class="flex items-center gap-3 pb-4 border-b border-gray-200">
         <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
           <i class="fa-solid ${icon}"></i>
         </div>
@@ -321,7 +317,7 @@ function openUpload(state, key, label) {
         </div>
       ` : ''}
       
-      <div class="flex justify-end gap-3 pt-4 border-t">
+      <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
         <button class="btn px-5" onclick="closeModal()">ยกเลิก</button>
         <button class="btn btn-primary px-5" onclick="saveUpload('${key}','${label}')"><i class="fa-solid fa-check mr-2"></i> บันทึก</button>
       </div>

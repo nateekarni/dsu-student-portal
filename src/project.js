@@ -171,6 +171,13 @@ function renderProject(p) {
   root.innerHTML = `
     <div class="max-w-4xl mx-auto space-y-6">
 
+      <!-- Breadcrumb & Back -->
+      <div class="flex items-center justify-between text-sm">
+        <a href="/" class="text-gray-500 hover:text-primary flex items-center gap-1"><i class="fa-solid fa-angle-left"></i> กลับ</a>
+        <span class="font-medium text-gray-700">รายละเอียดโครงการ</span>
+        <div class="w-12"></div>
+      </div>
+
       <!-- Hero Section -->
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <!-- Cover Image Only -->
