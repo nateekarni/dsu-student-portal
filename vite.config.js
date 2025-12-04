@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: resolve(process.cwd(), 'index.html'),
         admin: resolve(process.cwd(), 'Admin/index.html'), // แยกหน้า Admin
+        adminLogin: resolve(process.cwd(), 'Admin/login.html'), // แยกหน้า Login Admin
       },
     },
   },
