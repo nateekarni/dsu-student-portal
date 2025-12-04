@@ -123,7 +123,7 @@ window.handleCreateProject = async (e) => {
 
     try {
         console.log("Sending Data:", data);
-        // const res = await API.createProject(data); // เรียก API จริง
+        const res = await API.createProject(data); // เรียก API จริง
         alert('Mock Submit Success!\n' + JSON.stringify(data, null, 2));
         window.closeModal('create-project-modal');
         form.reset();
