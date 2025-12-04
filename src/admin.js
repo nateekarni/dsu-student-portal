@@ -3,6 +3,11 @@ import { API } from './api.js';
 import { StatusBadge } from './components/StatusBadge.js';
 import { Button } from './components/Button.js';
 
+const adminUser = JSON.parse(localStorage.getItem('admin_user'));
+if (!adminUser) {
+    // ถ้าไม่มีข้อมูล Admin ให้ดีดกลับไปหน้า Login ทันที
+    window.location.href = '/admin/login.html';
+}
 async function init() {
     // 1. ดึงข้อมูลโครงการและผู้สมัคร
     const [projectsRes, applicantsRes] = await Promise.all([
