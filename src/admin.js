@@ -2,6 +2,7 @@ import './style.css';
 import { API } from './api.js';
 import { StatusBadge } from './components/StatusBadge.js';
 import { Button } from './components/Button.js';
+import { Modal } from './components/Modal.js';
 
 const adminUser = JSON.parse(localStorage.getItem('admin_user'));
 if (!adminUser) {
@@ -23,6 +24,7 @@ function renderDashboard(projects, applicants) {
     const container = document.getElementById('admin-content');
     
     container.innerHTML = `
+        ${createProjectModal()}
         <div class="animate-fade-in space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 ${StatCard('โครงการทั้งหมด', projects.length, 'fa-layer-group', 'blue')}
@@ -34,7 +36,7 @@ function renderDashboard(projects, applicants) {
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="px-6 py-4 border-b flex justify-between items-center">
                     <h3 class="font-bold text-gray-800">รายการโครงการล่าสุด</h3>
-                    ${Button({ text: 'สร้างโครงการ', icon: 'fa-plus', className: 'text-sm py-1.5' })}
+                    ${Button({ text: 'สร้างโครงการ', icon: 'fa-plus', className: 'text-sm py-1.5', onClick: 'openCreateProjectModal()' })}
                 </div>
                 <table class="w-full text-left border-collapse">
                     <thead class="bg-gray-50 text-gray-500 text-sm">
@@ -82,6 +84,94 @@ function StatCard(title, value, icon, color) {
             </div>
         </div>
     `;
+}
+
+// Modal Functions
+window.openModal = (id) => {
+    const el = document.getElementById(id);
+    el.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+    el.querySelector('div').classList.remove('scale-95');
+    el.querySelector('div').classList.add('scale-100');
+};
+
+window.closeModal = (id) => {
+    const el = document.getElementById(id);
+    el.classList.add('opacity-0', 'pointer-events-none');
+    el.querySelector('div').classList.add('scale-95');
+    setTimeout(() => el.classList.add('hidden'), 300);
+};
+
+window.openCreateProjectModal = () => {
+    openModal('create-project-modal');
+};
+
+window.handleCreateProject = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> กำลังบันทึก...';
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+    const data = {
+        title: formData.get('title'),
+        description: formData.get('description'),
+        status: formData.get('status') || 'active',
+        deadline: formData.get('deadline')
+    };
+
+    try {
+        const res = await API.createProject(data);
+        if (res.status === 'success') {
+            closeModal('create-project-modal');
+            form.reset();
+            init(); // Refresh data
+            alert('สร้างโครงการสำเร็จ!');
+        } else {
+            alert(res.message || 'เกิดข้อผิดพลาด');
+        }
+    } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+};
+
+function createProjectModal() {
+    return Modal({
+        id: 'create-project-modal',
+        title: 'สร้างโครงการใหม่',
+        content: `
+            <form id="create-project-form" onsubmit="handleCreateProject(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">ชื่อโครงการ</label>
+                    <input type="text" name="title" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" required placeholder="กรอกชื่อโครงการ">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">รายละเอียด</label>
+                    <textarea name="description" rows="3" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="รายละเอียดโครงการ"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">วันหมดเขต</label>
+                    <input type="date" name="deadline" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">สถานะ</label>
+                    <select name="status" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
+                        <option value="active">เปิดรับสมัคร</option>
+                        <option value="inactive">ปิดรับสมัคร</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal('create-project-modal')" class="px-4 py-2 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">ยกเลิก</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg font-medium bg-primary text-white hover:bg-primary-hover shadow-md">บันทึก</button>
+                </div>
+            </form>
+        `
+    });
 }
 
 init();
