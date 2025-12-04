@@ -29,5 +29,7 @@ export const API = {
     // Admin Only
     getApplicants: () => fetchAPI('getApplicants'), // ต้องไปเพิ่มใน GAS
     updateDocStatus: (data) => fetchAPI('updateDocStatus', {}, 'POST', data),
-    adminLogin: (username, password) => fetchAPI('adminLogin', {}, 'POST', { username, password })
+    adminLogin: (username, password) => {
+        return fetchAPI('adminLogin', {}, 'POST', { username, password })
+    }
 };
