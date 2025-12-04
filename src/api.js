@@ -28,5 +28,8 @@ export const API = {
     getSecureImage: (fileId) => fetchAPI('getSecureImage', { fileId }),
     // Admin Only
     getApplicants: () => fetchAPI('getApplicants'), // ต้องไปเพิ่มใน GAS
-    updateDocStatus: (data) => fetchAPI('updateDocStatus', {}, 'POST', data)
+    updateDocStatus: (data) => fetchAPI('updateDocStatus', {}, 'POST', data),
+    adminLogin: (username, password) => {
+        return
+    }
 };
