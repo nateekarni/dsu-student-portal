@@ -56,7 +56,7 @@ function renderDashboard(projects, applicants) {
                         text: 'สร้างโครงการ', 
                         icon: 'fa-plus', 
                         className: 'text-sm py-2 shadow-sm', 
-                        onClick: 'openCreateProjectModal()' 
+                        onClick: 'createProjectModal()' 
                     })}
                 </div>
                 <div class="overflow-x-auto">
