@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link href="/src/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-bg-base min-h-screen pb-20">
+    <nav class="bg-white shadow-sm sticky top-0 z-40 h-16 px-4 md:px-8 flex items-center justify-between">
+        <div class="flex items-center gap-2 text-primary font-bold text-xl cursor-pointer" onclick="location.reload()">
+            <i class="fa-solid fa-graduation-cap"></i> <span class="hidden sm:inline">StudentPortal</span>
+        </div>
+        <div id="auth-section"></div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto pt-8 px-4" id="app-container">
+        <div id="loader" class="flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-primary text-3xl"></i></div>
+    </main>
+
+    <div id="modal-container"></div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
