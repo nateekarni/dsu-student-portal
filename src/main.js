@@ -176,10 +176,8 @@ window.toggleMobileFilter = () => {
 };
 
 window.openProjectDetail = (id) => {
-    const project = allProjects.find(p => p.id === id);
-    if (project) {
-        alert(`เปิดรายละเอียดโครงการ: ${project.title}`);
-    }
+    // ไปยังหน้าแสดงรายละเอียดโครงการ พร้อม query id
+    location.href = `/project.html?id=${encodeURIComponent(id)}`;
 };
 
 window.viewDashboard = () => alert('เปิดหน้าสถานะการสมัคร');

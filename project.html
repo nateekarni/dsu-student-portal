@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>รายละเอียดโครงการ | StudentFeed</title>
+  <link href="/src/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50 h-14 px-4 flex items-center justify-between border-b border-gray-200">
+    <div class="flex items-center gap-3">
+      <a class="flex items-center gap-2 text-primary font-bold text-xl cursor-pointer" href="/">
+        <i class="fa-solid fa-graduation-cap"></i> <span class="text-gray-800">Student</span><span class="text-primary">Feed</span>
+      </a>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <a href="/" class="text-gray-500 hover:text-primary flex items-center gap-1"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/admin/login.html" class="text-xs text-gray-400 hover:text-gray-600 hidden md:inline">Admin Mode</a>
+      <div id="auth-section"></div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto p-4">
+    <!-- Breadcrumb & Back -->
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+      <a href="/" class="hover:text-primary flex items-center gap-1"><i class="fa-solid fa-angle-left"></i> กลับ</a>
+      <span class="text-gray-300">|</span>
+      <span>รายละเอียดโครงการ</span>
+    </div>
+
+    <div id="project-root">
+      <div class="flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-primary text-3xl"></i></div>
+    </div>
+  </main>
+
+  <div id="modal-container"></div>
+
+  <script type="module" src="/src/project.js"></script>
+</body>
+</html>
