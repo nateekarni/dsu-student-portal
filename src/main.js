@@ -36,7 +36,8 @@ function renderAuth() {
 async function loadFeed() {
     const container = document.getElementById('app-container');
     const res = await API.getProjects();
-    const projects = res.data || [];
+    // รองรับทั้งกรณี GAS ส่ง Array ตรงๆ หรือ wrap ใน { data: [...] }
+    const projects = Array.isArray(res) ? res : (res.data || []);
 
     container.innerHTML = `
         <div class="space-y-6 animate-fade-in">
