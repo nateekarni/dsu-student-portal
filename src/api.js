@@ -30,5 +30,5 @@ export const API = {
     getApplicants: () => fetchAPI('getApplicants'), // ต้องไปเพิ่มใน GAS
     updateDocStatus: (data) => fetchAPI('updateDocStatus', {}, 'POST', data),
     adminLogin: (username, password) => fetchAPI('adminLogin', {}, 'POST', { username, password }),
-    createProject: (data) => fetchAPI('createProject', {}, 'POST', data)
+    createProject: (data) => fetchAPI('createProject', {}, 'POST', data),
 };

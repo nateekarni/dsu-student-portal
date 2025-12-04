@@ -35,3 +35,111 @@ body {
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Sidebar Links */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+}
+.sidebar-link:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+.sidebar-link.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+/* Mobile Filter Links */
+.mobile-filter-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s;
+}
+.mobile-filter-link:hover,
+.mobile-filter-link.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+/* Feed Card Styles */
+.feed-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.feed-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Status Tags */
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.status-tag.open {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+.status-tag.soon {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+.status-tag.closed {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+/* Deadline Item */
+.deadline-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.deadline-item:last-child {
+  border-bottom: none;
+}
+.deadline-item img {
+  width: 4rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

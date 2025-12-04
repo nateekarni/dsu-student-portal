@@ -108,12 +108,14 @@ window.handleCreateProject = async (e) => {
 
     const formData = new FormData(form);
     const data = {
-        // action: 'createProject', // (ถ้า API ต้องการ action ให้ใส่ตรงนี้หรือใน api.js)
         title: formData.get('title'),
-        location: formData.get('location'),
+        city: formData.get('city'),
+        country: formData.get('country'),
         quota: formData.get('quota'),
         price: formData.get('price'),
         deadline: formData.get('deadline'),
+        start_date: formData.get('start_date'),
+        end_date: formData.get('end_date'),
         image: formData.get('image'),
         desc: formData.get('description'),
         status: formData.get('status'),
@@ -233,12 +235,17 @@ function createProjectModal() {
                     <h4 class="font-bold text-gray-700 border-b pb-2 mb-4">1. ข้อมูลทั่วไป</h4>
                     ${Input({ label: 'ชื่อโครงการ', name: 'title', required: true, placeholder: 'ชื่อโครงการ' })}
                     <div class="grid grid-cols-2 gap-4">
-                        ${Input({ label: 'สถานที่', name: 'location' })}
-                        ${Input({ label: 'จำนวนรับ', name: 'quota', type: 'number' })}
+                        ${Input({ label: 'เมือง (City)', name: 'city', placeholder: 'เช่น London, Tokyo' })}
+                        ${Input({ label: 'ประเทศ (Country)', name: 'country', placeholder: 'เช่น UK, Japan' })}
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        ${Input({ label: 'ค่าใช้จ่าย', name: 'price' })}
-                        ${Input({ label: 'วันหมดเขต', name: 'deadline', type: 'date', required: true })}
+                        ${Input({ label: 'จำนวนรับ', name: 'quota', type: 'number' })}
+                        ${Input({ label: 'ค่าใช้จ่าย', name: 'price', placeholder: '0 = ฟรี' })}
+                    </div>
+                    ${Input({ label: 'วันปิดรับสมัคร', name: 'deadline', type: 'date', required: true })}
+                    <div class="grid grid-cols-2 gap-4">
+                        ${Input({ label: 'วันเริ่มโครงการ', name: 'start_date', type: 'date' })}
+                        ${Input({ label: 'วันสิ้นสุดโครงการ', name: 'end_date', type: 'date' })}
                     </div>
                     ${Input({ label: 'URL รูปปก', name: 'image', placeholder: 'https://...' })}
                     <div>

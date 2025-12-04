@@ -3,22 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal</title>
+    <title>StudentFeed - โครงการสำหรับนักเรียน</title>
     <link href="/src/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-bg-base min-h-screen pb-20">
-    <nav class="bg-white shadow-sm sticky top-0 z-40 h-16 px-4 md:px-8 flex items-center justify-between">
-        <div class="flex items-center gap-2 text-primary font-bold text-xl cursor-pointer" onclick="location.reload()">
-            <i class="fa-solid fa-graduation-cap"></i> <span class="hidden sm:inline">StudentPortal</span>
+<body class="bg-slate-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 h-14 px-4 flex items-center justify-between border-b border-gray-200">
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 text-primary font-bold text-xl cursor-pointer" onclick="location.reload()">
+                <i class="fa-solid fa-graduation-cap"></i> <span class="text-gray-800">Student</span><span class="text-primary">Feed</span>
+            </div>
         </div>
-        <div id="auth-section"></div>
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+            <a href="#" class="text-primary flex items-center gap-1"><i class="fa-solid fa-house"></i> หน้าแรก</a>
+            <a href="#" class="text-gray-500 hover:text-primary flex items-center gap-1"><i class="fa-solid fa-bell"></i> แจ้งเตือน</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="/admin/login.html" class="text-xs text-gray-400 hover:text-gray-600 hidden md:inline">Admin Mode</a>
+            <div id="auth-section"></div>
+        </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto pt-8 px-4" id="app-container">
-        <div id="loader" class="flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-primary text-3xl"></i></div>
-    </main>
+    <!-- Main Layout -->
+    <div class="flex max-w-7xl mx-auto">
+        <!-- Sidebar (Desktop) -->
+        <aside id="sidebar" class="hidden lg:block w-64 p-4 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto">
+            <div class="bg-white rounded-xl shadow-sm p-4 space-y-1">
+                <a href="#" class="sidebar-link active" data-filter="all">
+                    <i class="fa-solid fa-newspaper w-5"></i> ข่าวสารโครงการ
+                </a>
+                <a href="#" class="sidebar-link" data-filter="applied">
+                    <i class="fa-solid fa-list-check w-5"></i> สถานะการสมัคร
+                </a>
+                <a href="#" class="sidebar-link" data-filter="favorite">
+                    <i class="fa-solid fa-star w-5"></i> โครงการที่สนใจ
+                </a>
+                
+                <div class="border-t border-gray-100 my-3 pt-3">
+                    <p class="text-xs text-gray-400 font-medium mb-2 px-3">หมวดหมู่</p>
+                    <a href="#" class="sidebar-link" data-filter="exchange">
+                        <i class="fa-solid fa-earth-asia w-5 text-blue-500"></i> แลกเปลี่ยนต่างประเทศ
+                    </a>
+                    <a href="#" class="sidebar-link" data-filter="camp">
+                        <i class="fa-solid fa-campground w-5 text-orange-500"></i> ค่ายวิชาการ
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Feed Content -->
+        <main class="flex-1 min-w-0 p-4">
+            <!-- Mobile Filter Button -->
+            <div class="lg:hidden mb-4 flex gap-2">
+                <div class="flex-1 relative">
+                    <input type="text" placeholder="ค้นหาโครงการ..." class="w-full bg-white pl-10 pr-4 py-2 rounded-md shadow-sm border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <button onclick="toggleMobileFilter()" class="flex items-center gap-2 bg-white px-4 py-2 rounded-md shadow-sm border border-gray-200 text-sm font-medium text-gray-600">
+                    <i class="fa-solid fa-filter"></i> ตัวกรอง
+                </button>
+            </div>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden lg:flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-primary text-white rounded-md flex items-center justify-center font-bold text-sm">ST</div>
+                <div class="flex-1 relative">
+                    <input type="text" placeholder="ค้นหาโครงการที่คุณสนใจ..." class="w-full bg-white pl-4 pr-10 py-3 rounded-md shadow-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary">
+                    <i class="fa-solid fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Feed Container -->
+            <div id="app-container">
+                <div class="flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-primary text-3xl"></i></div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar (Desktop) -->
+        <aside class="hidden xl:block w-72 p-4 sticky top-14 h-[calc(100vh-56px)]">
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <h3 class="font-bold text-gray-800 mb-3">โครงการใกล้หมดเขต</h3>
+                <div id="deadline-projects" class="space-y-3">
+                    <!-- จะ render จาก JS -->
+                </div>
+            </div>
+            <div class="mt-4 text-xs text-gray-400 space-y-1 px-2">
+                <p>© 2025 School Portal Inc.</p>
+                <p>Privacy · Terms · Cookies</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Filter Modal -->
+    <div id="mobile-filter-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="toggleMobileFilter()"></div>
+        <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 transform transition-transform">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">ตัวกรอง</h3>
+                <button onclick="toggleMobileFilter()" class="text-gray-400"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            <div class="space-y-2" id="mobile-filter-links">
+                <a href="#" class="mobile-filter-link active" data-filter="all">
+                    <i class="fa-solid fa-newspaper w-6"></i> ข่าวสารโครงการ
+                </a>
+                <a href="#" class="mobile-filter-link" data-filter="applied">
+                    <i class="fa-solid fa-list-check w-6"></i> สถานะการสมัคร
+                </a>
+                <a href="#" class="mobile-filter-link" data-filter="favorite">
+                    <i class="fa-solid fa-star w-6"></i> โครงการที่สนใจ
+                </a>
+                <div class="border-t border-gray-100 my-3 pt-3">
+                    <p class="text-xs text-gray-400 font-medium mb-2">หมวดหมู่</p>
+                </div>
+                <a href="#" class="mobile-filter-link" data-filter="exchange">
+                    <i class="fa-solid fa-earth-asia w-6 text-blue-500"></i> แลกเปลี่ยนต่างประเทศ
+                </a>
+                <a href="#" class="mobile-filter-link" data-filter="camp">
+                    <i class="fa-solid fa-campground w-6 text-orange-500"></i> ค่ายวิชาการ
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div id="modal-container"></div>
 
