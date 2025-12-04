@@ -226,6 +226,7 @@ function createProjectModal() {
     return Modal({
         id: 'create-project-modal',
         title: '<i class="fa-solid fa-folder-plus text-blue-600 mr-2"></i> สร้างโครงการใหม่',
+        maxWidth: 'max-w-5xl',
         content: `
             <form id="create-project-form" onsubmit="handleCreateProject(event)" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="space-y-4">
