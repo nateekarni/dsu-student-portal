@@ -2,8 +2,8 @@
  * Admin Login Page
  */
 import './style.css';
-import { API } from './api.js';
-import { getStorage, setStorage } from './utils.js';
+import { API } from './api/index.js';
+import { getStorage, setStorage } from './utils/index.js';
 
 // ===== AUTH CHECK =====
 if (getStorage('admin_user')) {

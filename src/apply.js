@@ -1,4 +1,4 @@
-import { getStorage, setStorage } from './utils.js';
+import { getStorage, setStorage } from './utils/index.js';
 import './style.css';
 
 // Simple Modal System for Apply page

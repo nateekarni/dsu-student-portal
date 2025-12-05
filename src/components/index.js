@@ -1,18 +1,41 @@
 /**
- * Components Index - Export ทุก components จากที่เดียว
+ * Components Index - Re-export all components from a single entry point
+ * 
+ * Usage:
+ *   import { Button, Input, Modal, Table } from './components/index.js';
+ * 
+ * Structure:
+ *   components/
+ *   ├── ui/       - Form inputs, buttons, modals
+ *   ├── data/     - Tables, cards, badges, stats
+ *   └── feed/     - Feed cards for project listings
  */
 
-// Core Components
-export { Button } from './Button.js';
-export { Input } from './Input.js';
-export { Select } from './Select.js';
-export { Textarea } from './Textarea.js';
-export { Modal, initModalSystem, modalScripts } from './Modal.js';
+// ===== UI Components =====
+export { 
+  Button, 
+  Input, 
+  Select, 
+  Textarea, 
+  Modal, 
+  initModalSystem 
+} from './ui/index.js';
 
-// Display Components
-export { StatusBadge } from './StatusBadge.js';
-export { Tag, StatusTag } from './Tag.js';
-export { StatCard } from './StatCard.js';
-export { FeedCard, FeedCardCompact } from './FeedCard.js';
-export { Table, Card } from './Table.js';
-export { EmptyState, LoadingSpinner, Avatar } from './Common.js';
+// ===== Data Display Components =====
+export { 
+  Table, 
+  Card, 
+  StatCard, 
+  StatusBadge, 
+  Tag, 
+  StatusTag,
+  Avatar,
+  EmptyState, 
+  LoadingSpinner 
+} from './data/index.js';
+
+// ===== Feed Components =====
+export { 
+  FeedCard, 
+  FeedCardCompact 
+} from './feed/index.js';

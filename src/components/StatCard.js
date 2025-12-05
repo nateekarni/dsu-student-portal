@@ -7,8 +7,9 @@
  * @param {string} props.color - 'blue' | 'yellow' | 'red' | 'green' | 'purple'
  * @param {string} props.trend - ข้อความแสดง trend (optional)
  * @param {boolean} props.trendUp - trend ขึ้นหรือลง
+ * @param {string} props.onClick - onclick handler (optional)
  */
-export function StatCard({ title, value, icon, color = 'blue', trend = '', trendUp = true }) {
+export function StatCard({ title, value, icon, color = 'blue', trend = '', trendUp = true, onClick = '' }) {
     const colorStyles = {
         blue: { icon: 'text-blue-600 bg-blue-100', trend: 'text-blue-600' },
         yellow: { icon: 'text-yellow-600 bg-yellow-100', trend: 'text-yellow-600' },
@@ -18,9 +19,13 @@ export function StatCard({ title, value, icon, color = 'blue', trend = '', trend
     };
     
     const styles = colorStyles[color] || colorStyles.blue;
+    const clickable = onClick ? 'cursor-pointer hover:shadow-md' : '';
+    // แปลง double quotes เป็น single quotes เพื่อไม่ให้ขัดกับ attribute
+    const safeOnClick = onClick.replace(/"/g, "'");
+    const onClickAttr = onClick ? `onclick="${safeOnClick}"` : '';
     
     return `
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between hover:-translate-y-1 transition duration-300">
+        <div ${onClickAttr} class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between hover:-translate-y-1 transition duration-300 ${clickable}">
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">${title}</p>
                 <h4 class="text-3xl font-bold text-gray-800">${value}</h4>

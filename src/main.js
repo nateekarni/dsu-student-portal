@@ -2,7 +2,7 @@
  * Main.js - หน้าแสดงรายการโครงการสำหรับนักเรียน
  */
 import './style.css';
-import { API } from './api.js';
+import { API } from './api/index.js';
 import { 
     Button, 
     Modal, 
@@ -11,7 +11,7 @@ import {
     FeedCardCompact, 
     EmptyState 
 } from './components/index.js';
-import { getStorage, removeStorage } from './utils.js';
+import { getStorage, removeStorage } from './utils/index.js';
 
 // ===== STATE =====
 let currentUser = getStorage('student_user');

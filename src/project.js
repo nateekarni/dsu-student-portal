@@ -2,9 +2,9 @@
  * Project Details Page - แสดงรายละเอียดโครงการแบบสินค้าออนไลน์
  */
 import './style.css';
-import { API } from './api.js';
+import { API } from './api/index.js';
 import { Button, Modal, initModalSystem } from './components/index.js';
-import { formatDateRange, formatLocation, formatCurrency, getStorage, removeStorage } from './utils.js';
+import { formatDateRange, formatLocation, formatCurrency, getStorage, removeStorage } from './utils/index.js';
 
 let currentUser = getStorage('student_user');
 let project = null;

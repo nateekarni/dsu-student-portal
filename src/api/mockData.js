@@ -1,7 +1,10 @@
-const API_URL = import.meta.env.VITE_API_URL;
+/**
+ * Mock Data for Offline Development
+ * แยก mock data ออกมาเพื่อให้ง่ายต่อการจัดการและเปลี่ยนเป็น API จริงในอนาคต
+ */
 
-// ===== Mock Data (Offline) =====
-const MOCK_PROJECTS = [
+// ===== Projects =====
+export const MOCK_PROJECTS = [
   {
     id: 'jp-summer-2026',
     title: 'โครงการแลกเปลี่ยนญี่ปุ่น ฤดูร้อน',
@@ -70,22 +73,15 @@ const MOCK_PROJECTS = [
   }
 ];
 
-// Wrapper สำหรับ Fetch (ปิดใช้งานภายนอกชั่วคราว)
-async function fetchAPI(action, params = {}, method = 'GET', body = null) {
-  // ชั่วคราว: ปิดการเรียก API จริง เพื่อใช้งาน Offline
-  // สามารถเปิดกลับโดยคืนโค้ดเดิม
-  return { status: 'offline' };
-}
-
-// ===== Mock Admin Users =====
-const MOCK_ADMINS = [
+// ===== Admin Users =====
+export const MOCK_ADMINS = [
   { id: 1, username: 'admin', password: '1234', name: 'Admin', role: 'admin' },
   { id: 2, username: 'teacher', password: '1234', name: 'อาจารย์ประจำ', role: 'teacher' },
   { id: 3, username: 'staff', password: '1234', name: 'เจ้าหน้าที่', role: 'staff' },
 ];
 
-// ===== Mock Applicants (ผู้สมัคร) =====
-const MOCK_APPLICANTS = [
+// ===== Applicants (ผู้สมัคร) =====
+export const MOCK_APPLICANTS = [
   {
     id: 'app-001',
     projectId: 'jp-summer-2026',
@@ -100,7 +96,7 @@ const MOCK_APPLICANTS = [
       class: 'ม.5/1',
       dob: '2008-05-15',
     },
-    status: 'pending', // pending, reviewing, approved, rejected
+    status: 'pending',
     appliedAt: '2025-12-01T10:30:00',
     documents: [
       { id: 'doc-001', name: 'สำเนาบัตรประชาชน', fileName: 'id_card_somchai.pdf', fileUrl: 'https://www.w3.org/WAI/WCAG21/Techniques/pdf/img/table-word.jpg', status: 'pending', uploadedAt: '2025-12-01T10:30:00' },
@@ -200,60 +196,3 @@ const MOCK_APPLICANTS = [
     notes: 'เอกสารไม่ผ่าน กรุณาอัปโหลดใหม่',
   },
 ];
-
-export const API = {
-  // ใช้ Mock แทน
-  getProjects: async () => {
-    // จำลองดีเลย์ให้เหมือนโหลดข้อมูล
-    await new Promise(r => setTimeout(r, 200));
-    return MOCK_PROJECTS;
-  },
-  // ส่วนอื่น ๆ ปิดไว้ชั่วคราว ให้คืน error
-  login: async () => ({ status: 'error', message: 'Offline mode' }),
-  register: async () => ({ status: 'error', message: 'Offline mode' }),
-  upload: async () => ({ status: 'error', message: 'Offline mode' }),
-  getSecureImage: async () => ({ status: 'error', message: 'Offline mode' }),
-  
-  // Admin Only
-  getApplicants: async (projectId = null) => {
-    await new Promise(r => setTimeout(r, 200));
-    if (projectId) {
-      return MOCK_APPLICANTS.filter(a => a.projectId === projectId);
-    }
-    return MOCK_APPLICANTS;
-  },
-  
-  getApplicantById: async (id) => {
-    await new Promise(r => setTimeout(r, 150));
-    return MOCK_APPLICANTS.find(a => a.id === id) || null;
-  },
-  
-  updateDocStatus: async (docId, status, rejectReason = '') => {
-    await new Promise(r => setTimeout(r, 200));
-    // Mock update - ในระบบจริงจะอัปเดต database
-    return { status: 'success', message: `อัปเดตสถานะเอกสาร ${docId} เป็น ${status}` };
-  },
-  
-  updateApplicantStatus: async (applicantId, status, notes = '') => {
-    await new Promise(r => setTimeout(r, 200));
-    return { status: 'success', message: `อัปเดตสถานะผู้สมัคร ${applicantId} เป็น ${status}` };
-  },
-  
-  adminLogin: async (username, password) => {
-    await new Promise(r => setTimeout(r, 300));
-    const user = MOCK_ADMINS.find(u => u.username === username && u.password === password);
-    if (user) {
-      return { status: 'success', user: { id: user.id, name: user.name, role: user.role } };
-    }
-    return { status: 'error', message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' };
-  },
-  createProject: async (data) => {
-    await new Promise(r => setTimeout(r, 300));
-    return { status: 'success', message: 'สร้างโครงการสำเร็จ (Mock)' };
-  },
-  
-  updateProject: async (data) => {
-    await new Promise(r => setTimeout(r, 300));
-    return { status: 'success', message: 'อัปเดตโครงการสำเร็จ (Mock)' };
-  },
-};
